@@ -1,267 +1,57 @@
 const quiz = document.getElementById('quiz');
-const quest = document.getElementById('quest');
+const questionField = document.getElementById('question');
 const list = document.getElementById('list');
 const lies = document.getElementsByClassName('li');
+const header = document.getElementById('header');
 let number = 0;
-let leftTasks=[];
-const correctAnswers =[];
+const correctAnswers = [];
 
-const tasks = [
-    {
-        question: 'сколько мне лет?',
-        answers:[21,26,29],
-        correctAnswer: 29,
-        wasQuestionAnswered: false,
-        chosenAnswer:''
-    },
-    {
-        question: 'любимый цвет?',
-        answers:['желтый','фиолетовый','красный'],
-        correctAnswer: 'фиолетовый',
-        wasQuestionAnswered: false,
-        chosenAnswer:''
-    },
 
-    {
-        question: 'любимое блюдо?',
-        answers:['пицца','паста','шаурма'],
-        correctAnswer: 'пицца',
-        wasQuestionAnswered: false,
-        chosenAnswer:''
-    }
-];
+const filteredTasks = tasks.sort(compareRandom);
 
-function addQuestion(){
-
+function addQuestion() {
     console.log(correctAnswers);
-    console.log(tasks);
-    leftTasks = tasks.filter(task=>{return !task.wasQuestionAnswered});
-    number = getRandomInt(0,leftTasks.length);
-
-    if(leftTasks.length){
-    leftTasks[number].wasQuestionAnswered = true;
-    quest.innerText = leftTasks[number].question;
-    leftTasks[number].answers.sort(compareRandom).forEach((answer,idx)=>{lies[idx].innerText=answer});
-    }else{
-        removeListener();
-        alert(`your score is ${correctAnswers.length}`)
+    if (number < filteredTasks.length) {
+        questionField.innerText = filteredTasks[number].question;
+        filteredTasks[number].answers.sort(compareRandom).forEach((answer, idx) => { lies[idx].innerText = answer });
+    } else {
+        header.remove();
+        list.remove();
+        let result = document.createElement('div');
+        result.className = 'result';
+        if ((correctAnswers.length / filteredTasks.length * 100) > 50) {
+            result.innerHTML = `<div>Молодец! Правильных ответов: ${correctAnswers.length / filteredTasks.length * 100}%</div><div>(${correctAnswers.length} из ${filteredTasks.length})</div>`
+        } else {
+            result.innerHTML = `<div>Соберись и попробуй еще раз! Правильных ответов: ${correctAnswers.length / filteredTasks.length * 100}%</div><div>(${correctAnswers.length} из ${filteredTasks.length})</div>`
+        }
+        quiz.append(result);
     }
 }
 
-addQuestion();
-
-function next(event){
-   if(leftTasks[number].correctAnswer == event.target.innerText){
-    correctAnswers.push(event.target.innerText);
-   }
+function next(event) {
+    if (filteredTasks[number].correctAnswer == event.target.innerText) {
+        correctAnswers.push(event.target.innerText);
+    }
+    number++;
     addQuestion();
 }
 
-for(let i=0; i<lies.length; i++){
-    lies[i].addEventListener('click', next);
+function compareRandom(a, b) {
+    return Math.random() - 0.5;
 }
 
-function removeListener(){
-    for(let j=0; j<lies.length; j++){
-        lies[j].removeEventListener('click', next);
+function addListener() {
+    for (let i = 0; i < lies.length; i++) {
+        lies[i].addEventListener('click', next);
     }
 }
 
-function compareRandom(a, b) {
-  return Math.random() - 0.5;
+function removeListener() {
+    for (let i = 0; i < lies.length; i++) {
+        lies[i].removeEventListener('click', next);
+    }
 }
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
 
-
-
-
-// function filter(){
-//    return filteredTasks = tasks.filter(task=>!task.wasQuestionAnswered);
-// }
-
-// const pushQuestion = () =>{
-    
-//     filter();
-//     console.log(filteredTasks);
- 
-    
-//    if(filteredTasks.length){
-        
-//         number = getRandomInt(0,filteredTasks.length+1);
-//         console.log(number);
-//         tasks[number].wasQuestionAnswered = true; 
-//         quest.innerText = tasks[number].question;
-//         tasks[number].answers.forEach((answer,idx) => {
-//         lies[idx].innerText = answer; 
-//     });
-//    }else{
-//     removeListener();
-//     countRightnAnswers();
-//    }
-// }
-// pushQuestion();
-
-
-
-// function nextQuestion(event) {
-//     if(event){
-//         tasks[number].chosenAnswer = event.target.innerText;
-        
-//     }
-//     console.log(tasks);
-//     pushQuestion();
-//   }
-
-// addListener();
-
-// function addListener(){
-//     for(let i=0; i<lies.length; i++){
-//         lies[i].addEventListener('click', nextQuestion)  
-//      }
-// }
-
-// function removeListener(){
-//     for(let i=0; i<lies.length; i++){
-//         lies[i].removeEventListener('click', nextQuestion)  
-//      }
-// }
-
-// function countRightnAnswers(){
-//     const amount = tasks.filter(task=>{return task.correctAnswer==task.chosenAnswer})
-//     console.log(`правильных ответов ${amount.length}`);
-// }
-
-
-
-// function getRandomInt(min, max) {
-//     return Math.floor(Math.random() * (max - min)) + min;
-//   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// let question = document.getElementById('question');
-// let button = document.getElementById('next');
-// let answersList = document.querySelector('ol');
-// const list = document.getElementsByTagName('li');
-// let radio = '<input name="radio" type="radio">';
-// let click = 0;
-// let score = 0;
-// userAnswer= [];
-
-
-// const tasks = [
-   
-//     ['сколько мне лет?', 21, 26, 29, 21],
-//     ['любимый цвет?', 'желтый', 'фиолетовый', 'крысный', 'фиолетовый' ],
-//     ['любимое блюдо', 'пицца', 'шаурма', 'паста', 'пицца']
-// ]
-
-
-// function pushQuestion(e) {
-
-//     question.innerHTML = tasks[click][0];
-//     list[0].innerHTML =  radio +  tasks[click][1];
-//     list[1].innerHTML = radio +  tasks[click][2];
-//     list[2].innerHTML = radio +  tasks[click][3];
-//     click++;
-// }
-
-// for(let i = 0; i < list.length; i++) {
-//     list[i].addEventListener("click", pushQuestion);
-// }
-
-
-
-
-
-
-
-
+addQuestion();
+addListener();
