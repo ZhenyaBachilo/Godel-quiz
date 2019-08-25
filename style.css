@@ -1,9 +1,27 @@
-.quiz{
+#quiz{
     border: 1px solid black;
-    width: 500px;
+    max-width: 500px;
     height: 300px;
     margin: 50px auto;
     padding: 30px;
     background-color: antiquewhite;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+/* h1{
+    text-align: center;
+} */
+
+.li{
+  
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.li:hover{
+    background-color: red;
 }
